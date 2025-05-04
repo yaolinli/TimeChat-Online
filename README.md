@@ -1,33 +1,29 @@
-# TimeChat-Online: 80% Visual Tokens are Naturally Redundant in Streaming Videos
+# TimeChat-Online: 80% Visual Tokens are Naturally Redundant in Streaming Videos</h1>
 
-<p align="center">
+<p align="left">
 🔗 <a href="https://timechat-online.github.io/" target="_blank">Project Page</a> · 📖 <a href="https://arxiv.org/abs/2504.17343" target="_blank">Paper</a> · ⭐ <a href="https://github.com/yaolinli/TimeChat-Online" target="_blank">GitHub</a> · 📊 <a href="https://huggingface.co/datasets/yaolily/TimeChat-Online-139K" target="_blank">Dataset</a> · 🤗 <a href="https://huggingface.co/yaolily/TimeChat-Online" target="_blank">Checkpoints</a>
 </p>
 
-## 📰 News
+📰 **News**
 
 - **[2025-05-01]** Our paper and project page are now available.
 
-## 🚀 Coming Soon
+🚀 **Coming Soon**
 
 - [ ] Model checkpoints and inference code
 - [ ] Full training code, scripts, and benchmark evaluation tools
 
 ## Introduction
 
-<p align="center">
-<img src="https://timechat-online.github.io/static/images/case.png" alt="TimeChat-Online Overview" style="width: 100%;">
-</p>
+
 
 **TimeChat-Online** is a novel online VideoLLM designed for efficient streaming video understanding. Its core innovation, the **Differential Token Drop (DTD)** module, tackles visual redundancy by selectively preserving only meaningful temporal changes while eliminating static content between frames. Our experiments show that over 80% of streaming video content is naturally redundant without requiring user-query guidance.
 
 
+<img width="1073" alt="image" src="https://github.com/user-attachments/assets/b9ad1d0b-10e0-4125-8a06-2216eef1fcc3" />
+
 
 ## Key Features of TimeChat-Online
-
-<p align="center">
-<img src="https://timechat-online.github.io/static/images/teaser.png" alt="TimeChat-Online Overview" style="width: 100%;">
-</p>
 
 ✨ **Video-aware Dynamic Pruning:**
 DTD adaptively reduces video tokens from a holistic video perspective, well-suited for both high-speed and slow-motion videos.
@@ -41,7 +37,11 @@ DTD efficiently processes video streams by calculating redundancy only for newly
 🎉 **Proactive Response Capability:**
 TimeChat-Online naturally monitors video scene transitions through the DTD module, enabling autonomous identification of critical moments that require responses without explicit queries.
 
-**Model Architecture**
+
+<img width="967" alt="image" src="https://github.com/user-attachments/assets/2b6c65b0-f165-4ce7-841d-4cd8905998aa" />
+
+
+## Model Architecture
 <p align="center">
 <img src="https://timechat-online.github.io/static/images/model.png" alt="TimeChat-Online Model Architecture" style="width: 100%;">
 </p>
