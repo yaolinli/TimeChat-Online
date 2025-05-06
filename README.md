@@ -70,6 +70,11 @@ For flexible real-time interaction, we introduce a comprehensive streaming video
 - Average of **87.8** scene-oriented key frames per video (~7.14 seconds between consecutive frames)
 
 [todo] We will release the video frames at 1 fps and the question-answer pairs soon.
+
+## Training
+We utilize the ms-swift framework for model training. Please note that the training script requires modifications to both ms-swift and transformers code. For detailed instructions, refer to the guidelines in [`train/readme.md`](./train/readme.md) before execution.
+
+
 ## Citation
 
 If you find our work helpful, please consider citing:
