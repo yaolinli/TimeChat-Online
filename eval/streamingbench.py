@@ -21,7 +21,7 @@ RUN_NAME = "feature_0d5"
 DROP_METHOD = 'feature'
 DROP_THRESHOLD = 0.5
 DROP_ABSOLUTE = True
-CKPT_PATH = "/pfs/Models/Qwen2.5-VL-7B-Instruct"
+CKPT_PATH = "wyccccc/TimeChatOnline-7B"
 
 TASK_CSV = "/home/gaohuan03/yaolinli/datasets/StreamingBench/annos/Real_Time_Visual_Understanding.csv"
 VIDEO_DIR = "/home/gaohuan03/liyicheng/Datasets/StreamingBench/Real-Time Visual Understanding"

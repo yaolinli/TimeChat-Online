@@ -1,4 +1,3 @@
-export HF_HOME=/pfs/yaolinli/liyicheng/huggingface
 export CUDA_VISIBLE_DEVICES=0,1
 export DECORD_EOF_RETRY_MAX=40960
 
@@ -9,7 +8,7 @@ MAIN_PROCESS_PORT=29501
 RUN_NAME=feature_0d5
 DROP_METHOD=feature     # "feature" or "pixel" or "none"
 DROP_TRESHOLD=0.5
-CKPT_PATH=/pfs/Models/Qwen2.5-VL-7B-Instruct
+CKPT_PATH=wyccccc/TimeChatOnline-7B
 RESULT_DIR=eval/result_mlvu
 
 python -m accelerate.commands.launch \

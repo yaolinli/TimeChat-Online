@@ -20,7 +20,7 @@ RUN_NAME = "feature_0d5"
 DROP_METHOD = 'feature'
 DROP_THRESHOLD = 0.5
 DROP_ABSOLUTE = True
-CKPT_PATH = "/pfs/Models/Qwen2.5-VL-7B-Instruct"
+CKPT_PATH = "wyccccc/TimeChatOnline-7B"
 
 TASK_PARQUET = "/pfs/Datasets/Video-MME/origin_data/videomme/test-00000-of-00001.parquet"
 VIDEO_DIR = "/pfs/Datasets/Video-MME/origin_data/videos/data/"
