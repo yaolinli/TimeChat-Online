@@ -197,7 +197,7 @@ class Qwen2VLTemplate(Template):
             inputs.images[index] = fetch_image({'image': inputs.images[index]})
             return ['<|vision_start|><|image_pad|><|vision_end|>']
         else:
-            #魏源成修改
+            #Timechat-Online modify
             #inputs.videos[index] = fetch_video({'video': inputs.videos[index]}).to(torch.uint8)
             inputs.videos[index] = fetch_video({'video': inputs.videos[index]})
             return ['<|vision_start|><|video_pad|><|vision_end|>']
@@ -299,7 +299,7 @@ class Qwen2VLTemplate(Template):
         position_ids, _ = model.get_rope_index(
             input_ids, image_grid_thw, video_grid_thw, attention_mask=inputs['attention_mask'], **kwargs)
         
-        #魏源成修改
+        #TimeChat-Online modify
         return {'inputs_embeds': inputs_embeds, 'position_ids': position_ids.contiguous(),'input_ids':input_ids,'pixel_values_videos':pixel_values_videos,'video_grid_thw':video_grid_thw}
 
     def _data_collator(self, batch: List[Dict[str, Any]], *, padding_to: Optional[int] = None) -> Dict[str, Any]:

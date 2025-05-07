@@ -849,7 +849,7 @@ class Template(ProcessorMixin):
             if k in {'input_ids', 'attention_mask', 'labels', 'position_ids'} and k not in kwargs:
                 kwargs[k] = v
         if 'inputs_embeds' in kwargs:
-            # 魏源成修改
+            # TimeChat-Online modify
             # kwargs.pop('input_ids', None)
             pass
 

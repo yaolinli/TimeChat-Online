@@ -1,3 +1,8 @@
+### Download dataset
+download dataset from [TimeChat-Online-139k](https://huggingface.co/datasets/wyccccc/TimeChat-Online-139K),[LLaVA-Video-178K](https://huggingface.co/datasets/lmms-lab/LLaVA-Video-178K),[Tarsier2-Recap-585K](https://huggingface.co/datasets/omni-research/Tarsier2-Recap-585K),[VideoChat-Flash-Training-Data](https://huggingface.co/datasets/OpenGVLab/VideoChat-Flash-Training-Data)
+
+Then replace the video paths in the JSONL files from [TimeChat-Online-139k](https://huggingface.co/datasets/wyccccc/TimeChat-Online-139K)
+
 ### Create Conda Environment
 
 ```bash

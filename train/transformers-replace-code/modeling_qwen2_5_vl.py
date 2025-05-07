@@ -55,7 +55,7 @@ from ...image_utils import (
 )
 from .configuration_qwen2_5_vl import Qwen2_5_VLConfig, Qwen2_5_VLVisionConfig
 
-#魏源成修改
+#TimeChat-Online modify
 import random
 random.seed(1234)
 
@@ -1252,7 +1252,7 @@ class Qwen2_5_VLModel(Qwen2_5_VLPreTrainedModel):
         dropped_pos_emb2_list       = []
         dropped_pos_ids_list        = []
         
-        ###魏源成修改
+        #TimeChat-Online modify
         filtered_labels = []
         
         # Used for storing dropped token positions and drop num. Uncomment if needed.
@@ -1375,8 +1375,7 @@ class Qwen2_5_VLModel(Qwen2_5_VLPreTrainedModel):
             pos_ids_i = sample_pos_ids.transpose(0,1)
             dropped_pos_ids_i = pos_ids_i[keep_mask.to(pos_ids_i.device)].transpose(0,1)  # shape [3, new_seq_len]
 
-            # 魏源成修改
-            # **同步删除 labels（原地修改）**
+            # TimeChat-Online modify
             if labels is not None:
                 drop_label_i = labels[i][keep_mask.to(labels.device)]
                 
@@ -1386,7 +1385,7 @@ class Qwen2_5_VLModel(Qwen2_5_VLPreTrainedModel):
             dropped_pos_emb1_list.append(dropped_pos_emb1.unsqueeze(1))           # [3, 1, new_seq_len, emb_dim]
             dropped_pos_emb2_list.append(dropped_pos_emb2.unsqueeze(1))           # [3, 1, new_seq_len, emb_dim]
             dropped_pos_ids_list.append(dropped_pos_ids_i.unsqueeze(1))           # [3, 1, new_seq_len]
-            ### 魏源成修改
+            # TimeChat-Online modify
             filtered_labels.append(drop_label_i)
 
 
@@ -1399,15 +1398,14 @@ class Qwen2_5_VLModel(Qwen2_5_VLPreTrainedModel):
 
         dropped_position_embeddings = (dropped_pos_emb1, dropped_pos_emb2)
         
-        ###魏源成修改
-        ###重新复原修改labels
+        # TimeChat-Online modify
         labels = torch.stack(filtered_labels)
         # save dropped_pos_ids
-        # with open("/home/gaohuan03/liyicheng/code/Qwen2-VL/examples/streamingbench/drop_pos_pixel.json", 'w') as f:
+        # with open("drop_pos_pixel.json", 'w') as f:
         #     json.dump(dropped_positions_info, f)
         
         # save drop num
-        # save_path = "/home/gaohuan03/liyicheng/code/Qwen2-VL/evaluation/videomme/dropnum_sim60.json"
+        # save_path = "dropnum_sim60.json"
         # if os.path.exists(save_path):
         #     with open(save_path, 'r') as f:
         #         dropnum = json.load(f)
@@ -2193,7 +2191,7 @@ class Qwen2_5_VLForConditionalGeneration(Qwen2_5_VLPreTrainedModel, GenerationMi
             pixel_values_videos=pixel_values_videos,
             image_grid_thw=image_grid_thw,
             video_grid_thw=video_grid_thw,
-            ###魏源成修改
+            #TimeChat-Online modify
             labels=labels
         )
 

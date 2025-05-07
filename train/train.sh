@@ -9,13 +9,7 @@ swift sft \
     --save_only_model \
     --save_strategy epoch \
     --model Qwen2.5-VL-7B-Instruct \
-    --dataset datasets/timeit-v2/anno_data/qa_pairs_50k_segs_swift_sft.jsonl \
-    datasets/tarsier2-recap-585k/tarsier2_recap_filtered_130k.jsonl \
-    dataset/llava-video-178k/train_100k_64_frames_vaild.jsonl \
-    datasets/timeit-v2/anno_data/qa_pairs_v2_24k_segs_swift_sft.jsonl \
-    dataset/ours/v3_25k_options.jsonl dataset/ours/v3_20k_positive_options.jsonl \
-    dataset/ours/v3_20k_negative_options.jsonl dataset/video-chat-flash/htstep_eventunderstanding-longvideo_annos-htstep_eventunderstanding_1k_1k.jsonl \
-    dataset/video-chat-flash/ego4dhcap_eventunderstanding-longvideo_annos-ego4dhcap_eventunderstanding_2k_2k.jsonl \
+    --dataset llava_video_100k.jsonl tarsier2_129k.jsonl videochat_flash_3k.jsonl time_chat_online_139k_train.jsonl \
     --enable_cache true \
     --freeze_vit true \
     --freeze_aligner false \
