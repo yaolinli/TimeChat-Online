@@ -7,11 +7,10 @@
 📰 **News**
 
 - **[2025-05-01]** Our paper and project page are now available.
+- **[2025-05-07]** Our checkpoints, inference code and training code are now available.
 
 🚀 **Coming Soon**
-
-- [ ] Model checkpoints and inference code
-- [ ] Full training code, scripts, and benchmark evaluation tools
+- [ ] Ours dataset comming soon.
 
 ## Introduction
 
