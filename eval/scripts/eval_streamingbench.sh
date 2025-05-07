@@ -1,15 +1,17 @@
 export CUDA_VISIBLE_DEVICES=0
 
+TASK_CSV="/home/gaohuan03/yaolinli/datasets/StreamingBench/annos/Real_Time_Visual_Understanding.csv"
+VIDEO_DIR="/home/gaohuan03/liyicheng/Datasets/StreamingBench/Real-Time Visual Understanding"
+
 RUN_NAME=feature_0d5
+CKPT_PATH="wyccccc/TimeChatOnline-7B"
+RESULT_DIR="eval/result_streamingbench"
+
+# DTD arguments
 DROP_METHOD=feature     # "feature" or "pixel" or "none"
 DROP_THRESHOLD=0.5
 
-CKPT_PATH="wyccccc/TimeChatOnline-7B"
-TASK_CSV="/home/gaohuan03/yaolinli/datasets/StreamingBench/annos/Real_Time_Visual_Understanding.csv"
-VIDEO_DIR="/home/gaohuan03/liyicheng/Datasets/StreamingBench/Real-Time Visual Understanding"
-RESULT_DIR="eval/result_streamingbench"
-
-python eval/streamingbench.py \
+python eval/scripts/streamingbench.py \
     --run_name $RUN_NAME \
     --drop_method $DROP_METHOD \
     --drop_threshold $DROP_THRESHOLD \

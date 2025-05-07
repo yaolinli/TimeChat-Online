@@ -13,6 +13,7 @@ import time
 from collections import defaultdict
 import argparse
 import sys
+sys.path.append(osp.abspath(osp.join(osp.dirname(__file__), '..')))
 from qwen2_5_vl import Qwen2_5_VLForConditionalGeneration
 
 # Parameters

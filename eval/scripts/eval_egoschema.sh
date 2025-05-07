@@ -5,10 +5,12 @@ NUM_PROCESSES=2
 MAIN_PROCESS_PORT=29501
 
 RUN_NAME=feature_0d5
-DROP_METHOD=feature     # "feature" or "pixel" or "none"
-DROP_TRESHOLD=0.5
 CKPT_PATH=wyccccc/TimeChatOnline-7B
 RESULT_DIR=eval/result_egoschema
+
+# DTD arguments
+DROP_METHOD=feature     # "feature" or "pixel" or "none"
+DROP_TRESHOLD=0.5
 
 python -m accelerate.commands.launch \
     --num_processes $NUM_PROCESSES \

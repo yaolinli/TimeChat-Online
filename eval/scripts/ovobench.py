@@ -14,8 +14,8 @@ from collections import defaultdict
 import argparse
 from moviepy.editor import VideoFileClip
 import math
-import ffmpeg
 import sys
+sys.path.append(osp.abspath(osp.join(osp.dirname(__file__), '..')))
 from qwen2_5_vl import Qwen2_5_VLForConditionalGeneration
 
 # Parameters

@@ -16,7 +16,7 @@ from transformers import (
 )
 
 import sys
-sys.path.append(osp.abspath(osp.join(osp.dirname(__file__), '../../..')))
+sys.path.append(osp.abspath(osp.join(osp.dirname(__file__), '../..')))
 from qwen2_5_vl import Qwen2_5_VLForConditionalGeneration
 
 from lmms_eval import utils
