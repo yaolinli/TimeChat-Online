@@ -58,7 +58,16 @@ TimeChat-Online naturally monitors video scene transitions through the DTD modul
 
 
 ## Quick Start
-[todo] Coming soon within the next week.
+### requirements
+```
+pip install transformers==4.49.0
+pip install accelerate==1.5.2
+pip install qwen-vl-utils[decord]==0.0.8
+```
+
+### using transformers and Qwen2_5_VLForConditionalGeneration to chat:
+
+
 ```python
 from transformers import AutoProcessor
 from qwen_vl_utils import process_vision_info
