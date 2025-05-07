@@ -72,7 +72,7 @@ pip install qwen-vl-utils[decord]==0.0.8
 from transformers import AutoProcessor
 from qwen_vl_utils import process_vision_info
 import time
-#pay attention to this line, not import from transformers
+#pay attention to this line, not import from transformers, import from our GitHub repo's eval folder qwen2_5_vl
 from eval.qwen2_5_vl import Qwen2_5_VLForConditionalGeneration
 
 curr_time = datetime.now().strftime("%Y%m%d_%H%M%S")
