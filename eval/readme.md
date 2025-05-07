@@ -47,7 +47,7 @@ bash eval/scripts/eval_videomme.sh
 ### OVO-Bench
 
 Download videos from [JoeLeelyf/OVO-Bench](https://huggingface.co/datasets/JoeLeelyf/OVO-Bench). Only `src_videos.tar.parta[a-e]` is needed, since our code includes chunking videos. Unzip them into a directory named `data`.  
-Download [ovo_bench_new.json](https://github.com/JoeLeelyf/OVO-Bench/blob/main/data/ovo_bench_new.json).  
+Download [`ovo_bench_new.json`](https://github.com/JoeLeelyf/OVO-Bench/blob/main/data/ovo_bench_new.json).  
 In [`eval_ovobench.sh`](./scripts/eval_ovobench.sh), set `TASK_JSON` to the path of `ovo_bench_new.json`, and `VIDEO_DIR` to the **root directory** of `data` (rather than `data` itself). Then run:
 
 ```bash
