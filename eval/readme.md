@@ -67,14 +67,14 @@ In each `eval_*.sh`, there are several alterable arguments:
 
 - `RUN_NAME`: The name of this run, used for logging.  
 
-- `CKPT_PATH`: The path to the checkpoint for evaluation. Default to our released checkpoint `wyccccc/TimeChatOnline-7B`.  
+- `CKPT_PATH`: The path to the checkpoint for evaluation. Default to our released checkpoint [`wyccccc/TimeChatOnline-7B`](https://huggingface.co/wyccccc/TimeChatOnline-7B).  
 
 - `RESULT_DIR`: The directory used to store logs, outputs and other infos. It will be auto-created if not exists.  
 
 - `DROP_METHOD`: The DTD method used. It can be set to `feature` for feature-level drop, `pixel` for pixel-level drop, and `none` to avoid drop.  
 
 - `DROP_THRESHOLD`: The threshold used for drop.  
-    - For feature-level drop, it ranges in $[-1, 1]$. The drop ratio grows as the threshold decreases.  
-    - For pixel-level drop, it ranges in $[0, 1]$. The drop ratio grows as the threshold increases.  
+    - For feature-level drop, it ranges in [-1, 1]. The drop ratio grows as the threshold decreases.  
+    - For pixel-level drop, it ranges in [0, 1]. The drop ratio grows as the threshold increases.  
 
 For details of the drop process, you can refer to the code [here](./qwen2_5_vl/modeling_qwen2_5_vl_DTD.py#L1137-L1400).  

@@ -154,6 +154,8 @@ For flexible real-time interaction, we introduce a comprehensive streaming video
 ## Training
 We utilize the ms-swift framework for model training. Please note that the training script requires modifications to both ms-swift and transformers code. For detailed instructions, refer to the guidelines in [`train/readme.md`](./train/readme.md) before execution.
 
+## Evaluation
+See [eval/readme.md](./eval/readme.md).
 
 ## Citation
 
