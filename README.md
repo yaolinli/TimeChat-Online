@@ -59,41 +59,43 @@ TimeChat-Online naturally monitors video scene transitions through the DTD modul
 
 ## Quick Start
 [todo] Coming soon within the next week.
-```
-from transformers import Qwen2_5_VLForConditionalGeneration, AutoTokenizer, AutoProcessor
+```python
+from transformers import AutoProcessor
 from qwen_vl_utils import process_vision_info
+import time
+#pay attention to this line, not import from transformers
+from eval.qwen2_5_vl import Qwen2_5_VLForConditionalGeneration
+
+curr_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+DROP_METHOD = 'feature'
+DROP_THRESHOLD = 0.5
+DROP_ABSOLUTE = True
+DR_SAVE_PATH = "drop_{curr_time}.jsonl"
 
 # default: Load the model on the available device(s)
 model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
-    "Qwen/Qwen2.5-VL-7B-Instruct", torch_dtype="auto", device_map="auto"
+    "wyccccc/TimeChatOnline-7B", torch_dtype="torch.bfloat16", attn_implementation="flash_attention_2",
+    device_map="auto",
 )
 
-# We recommend enabling flash_attention_2 for better acceleration and memory saving, especially in multi-image and video scenarios.
-# model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
-#     "Qwen/Qwen2.5-VL-7B-Instruct",
-#     torch_dtype=torch.bfloat16,
-#     attn_implementation="flash_attention_2",
-#     device_map="auto",
-# )
-
-# default processer
-processor = AutoProcessor.from_pretrained("Qwen/Qwen2.5-VL-7B-Instruct")
-
-# The default range for the number of visual tokens per image in the model is 4-16384.
-# You can set min_pixels and max_pixels according to your needs, such as a token range of 256-1280, to balance performance and cost.
-# min_pixels = 256*28*28
-# max_pixels = 1280*28*28
-# processor = AutoProcessor.from_pretrained("Qwen/Qwen2.5-VL-7B-Instruct", min_pixels=min_pixels, max_pixels=max_pixels)
-
+processor = AutoProcessor.from_pretrained("wyccccc/TimeChatOnline-7B")
 messages = [
     {
         "role": "user",
         "content": [
             {
-                "type": "image",
-                "image": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-VL/assets/demo.jpeg",
+                "type": "video",
+                "video": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen2-VL/space_woaudio.mp4",
+                # "min_pixels": 336*336,
+                # "max_pixels": 336*336,
+                # "max_frames": 1016,
+                # "min_frames": 4,
+                # "fps": 1.0
             },
-            {"type": "text", "text": "Describe this image."},
+            {
+                "type": "text", 
+                "text": "Describe this video."
+            },
         ],
     }
 ]
@@ -113,7 +115,14 @@ inputs = processor(
 inputs = inputs.to("cuda")
 
 # Inference: Generation of the output
-generated_ids = model.generate(**inputs, max_new_tokens=128)
+generated_ids = model.generate(
+    **inputs,
+    max_new_tokens=128,
+    drop_method=DROP_METHOD,
+    drop_threshold=DROP_THRESHOLD,
+    drop_absolute=DROP_ABSOLUTE,
+    dr_save_path=DR_SAVE_PATH,
+)
 generated_ids_trimmed = [
     out_ids[len(in_ids) :] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
 ]
