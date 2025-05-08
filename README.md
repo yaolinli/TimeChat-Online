@@ -1,13 +1,17 @@
 # TimeChat-Online: 80% Visual Tokens are Naturally Redundant in Streaming Videos</h1>
 
 <p align="left">
-🔗 <a href="https://timechat-online.github.io/" target="_blank">Project Page</a> · 📖 <a href="https://arxiv.org/abs/2504.17343" target="_blank">Paper</a> · ⭐ <a href="https://github.com/yaolinli/TimeChat-Online" target="_blank">GitHub</a> · 📊 <a href="https://huggingface.co/datasets/yaolily/TimeChat-Online-139K" target="_blank">Dataset</a> · 🤗 <a href="https://huggingface.co/wyccccc/TimeChatOnline-7B" target="_blank">Checkpoints</a>
+🔗 <a href="https://timechat-online.github.io/" target="_blank">Project Page</a> · 📖 <a href="https://arxiv.org/abs/2504.17343" target="_blank">Paper</a> · ⭐ <a href="https://github.com/yaolinli/TimeChat-Online" target="_blank">GitHub</a> · 📊 <a href="https://huggingface.co/datasets/wyccccc/TimeChat-Online-139K" target="_blank">Dataset</a> · 🤗 <a href="https://huggingface.co/wyccccc/TimeChatOnline-7B" target="_blank">Checkpoints</a>
 </p>
 
 📰 **News**
 - **[2025-05-08]** Released the [annotation files](https://huggingface.co/datasets/wyccccc/TimeChat-Online-139K) and started to upload [video frames](https://huggingface.co/datasets/yaolily/TimeChat-Online-139K) of the TimeChat-Online-139K dataset.
 - **[2025-05-07]** Our model [checkpoints](https://huggingface.co/wyccccc/TimeChatOnline-7B), [training code](https://github.com/yaolinli/TimeChat-Online/blob/main/train/), and [eval code](https://github.com/yaolinli/TimeChat-Online/blob/main/eval/) are now available.
 - **[2025-05-01]** Our [paper](https://arxiv.org/abs/2504.17343) and [project page](https://timechat-online.github.io/) are now available.
+
+🚀 **Coming soon:**
+
+The current released dataset and code is the *offline* version. We will release the online demo in a streaming manner later.
 
 
 ## Introduction
