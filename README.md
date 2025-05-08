@@ -5,12 +5,10 @@
 </p>
 
 📰 **News**
+- **[2025-05-08]** Released the [annotation files](https://huggingface.co/datasets/wyccccc/TimeChat-Online-139K) and started to upload [video frames](https://huggingface.co/datasets/yaolily/TimeChat-Online-139K) of the TimeChat-Online-139K dataset.
+- **[2025-05-07]** Our model [checkpoints](https://huggingface.co/wyccccc/TimeChatOnline-7B), [training code](https://github.com/yaolinli/TimeChat-Online/blob/main/train/), and [eval code](https://github.com/yaolinli/TimeChat-Online/blob/main/eval/) are now available.
+- **[2025-05-01]** Our [paper](https://arxiv.org/abs/2504.17343) and [project page](https://timechat-online.github.io/) are now available.
 
-- **[2025-05-01]** Our paper and project page are now available.
-- **[2025-05-07]** Our checkpoints, inference code and training code are now available.
-
-🚀 **Coming Soon**
-- [ ] Ours dataset comming soon.
 
 ## Introduction
 
@@ -64,7 +62,7 @@ pip install accelerate==1.5.2
 pip install qwen-vl-utils[decord]==0.0.8
 ```
 
-### using transformers and Qwen2_5_VLForConditionalGeneration to chat:
+### Using Transformers to chat:
 
 
 ```python
@@ -149,13 +147,12 @@ For flexible real-time interaction, we introduce a comprehensive streaming video
 - **139K** question-answer pairs covering backward tracing, real-time visual perception, and forward active responding
 - Average of **87.8** scene-oriented key frames per video (~7.14 seconds between consecutive frames)
 
-[todo] We will release the video frames at 1 fps and the question-answer pairs soon.
+We release the extracted video frames at 1 fps [here](https://huggingface.co/datasets/yaolily/TimeChat-Online-139K) and the question-answer pairs [here](https://huggingface.co/datasets/wyccccc/TimeChat-Online-139K).
 
 ## Training
-We utilize the ms-swift framework for model training. Please note that the training script requires modifications to both ms-swift and transformers code. For detailed instructions, refer to the guidelines in [`train/readme.md`](./train/readme.md) before execution.
-
+We utilize the ms-swift framework for model training. Please note that the training script requires modifications to both ms-swift and transformers code. For detailed instructions, refer to the guidelines in [`train/readme.md`](./train/) before execution.
 ## Evaluation
-See [`eval/readme.md`](./eval/readme.md).
+For detailed evaluation procedures, please refer to [`eval/readme.md`](./eval/).
 
 ## Citation
 
