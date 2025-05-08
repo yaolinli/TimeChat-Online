@@ -11,8 +11,7 @@
 
 🚀 **Coming soon:**
 
-The current released dataset and code is the *offline* version. We will release the online demo in a streaming manner later.
-
+- [ ] We will release the online demo in a streaming manner later.
 
 ## Introduction
 
