@@ -25,8 +25,8 @@ DROP_THRESHOLD = 0.5
 DROP_ABSOLUTE = True
 CKPT_PATH = "wyccccc/TimeChatOnline-7B"
 
-TASK_JSON = "/home/gaohuan03/liyicheng/code/OVO-Bench/data/ovo_bench.json"
-VIDEO_DIR = "/home/gaohuan03/liyicheng/code/OVO-Bench"
+TASK_JSON = "/home/gaohuan03/liyicheng/code/OVO-Bench/data/ovo_bench_new.json"
+VIDEO_DIR = "/home/gaohuan03/liyicheng/code/OVO-Bench/data"
 RESULT_DIR = "eval/result_ovobench"
 LOG_PATH = "log/{run_name}_{curr_time}.log"
 OUTPUT_JSONL = "output/{run_name}_{curr_time}.jsonl"

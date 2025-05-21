@@ -1,7 +1,7 @@
 export CUDA_VISIBLE_DEVICES=0
 
-TASK_JSON="/home/gaohuan03/liyicheng/code/OVO-Bench/data/ovo_bench.json"
-VIDEO_DIR="/home/gaohuan03/liyicheng/code/OVO-Bench"
+TASK_JSON="/home/gaohuan03/liyicheng/code/OVO-Bench/data/ovo_bench_new.json"
+VIDEO_DIR="/home/gaohuan03/liyicheng/code/OVO-Bench/data"
 
 RUN_NAME=feature_0d5
 CKPT_PATH="wyccccc/TimeChatOnline-7B"
