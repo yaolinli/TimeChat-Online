@@ -59,10 +59,10 @@ TimeChat-Online naturally monitors video scene transitions through the DTD modul
 
 ## Quick Start
 ### requirements
-```
-pip install transformers==4.49.0
-pip install accelerate==1.5.2
-pip install qwen-vl-utils[decord]==0.0.8
+```bash
+conda create --name TimeChatOnline-eval python=3.10
+conda activate TimeChatOnline-eval 
+pip install -r requirement.txt
 ```
 
 ### Using Transformers to chat:
@@ -72,6 +72,8 @@ pip install qwen-vl-utils[decord]==0.0.8
 from transformers import AutoProcessor
 from qwen_vl_utils import process_vision_info
 import time
+from datetime import datetime
+import torch
 #pay attention to this line, not import from transformers, import from our GitHub repo's eval folder qwen2_5_vl
 from eval.qwen2_5_vl import Qwen2_5_VLForConditionalGeneration
 
@@ -83,8 +85,8 @@ DR_SAVE_PATH = "drop_{curr_time}.jsonl"
 
 # default: Load the model on the available device(s)
 model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
-    "wyccccc/TimeChatOnline-7B", torch_dtype="torch.bfloat16", attn_implementation="flash_attention_2",
-    device_map="auto",
+    "wyccccc/TimeChatOnline-7B", torch_dtype=torch.bfloat16, attn_implementation="flash_attention_2",
+    device_map="cuda:0",
 )
 
 processor = AutoProcessor.from_pretrained("wyccccc/TimeChatOnline-7B")
@@ -94,7 +96,7 @@ messages = [
         "content": [
             {
                 "type": "video",
-                "video": "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen2-VL/space_woaudio.mp4",
+                "video": "file://your_video_path.mp4",
                 # "min_pixels": 336*336,
                 # "max_pixels": 336*336,
                 # "max_frames": 1016,
@@ -121,7 +123,7 @@ inputs = processor(
     padding=True,
     return_tensors="pt",
 )
-inputs = inputs.to("cuda")
+inputs = inputs.to("cuda:0")
 
 # Inference: Generation of the output
 generated_ids = model.generate(
