@@ -47,10 +47,10 @@ python web_demo.py [options]
 ## Demo workflow
 ![demo](assets/demo.png)
 Navigate to http://\<server-name\>:\<server-port\>.
-- **Single-Round Response**
+- **Single-Round Response:** 
 Switch to  Single-Round Response tab.
 Upload and play videos → Drag the time slider(or wait for automatic updates) → Type a question → Click Submit Question.
 
-- **Live Camera**
+- **Live Camera:** 
 Switch to Live Camera tab.
 Click Submit Video to capture webcam frames → Type a question → Click Submit Question.
