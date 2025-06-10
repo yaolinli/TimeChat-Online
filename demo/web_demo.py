@@ -313,7 +313,7 @@ def _launch_demo(args, model, processor):
         with gr.Sidebar(open=False):
             system_prompt_textbox = gr.Textbox(label='System Prompt', value=default_system_prompt)
         with gr.Tabs():
-            with gr.Tab('Single-Round Response'):
+            with gr.Tab('Upload Local Video'):
                 with gr.Row():
                     video_input = gr.Video(sources=['upload'], label='Upload Video', elem_id="my_video_1")
                     chatbot = gr.Chatbot(type='messages')

@@ -1,13 +1,18 @@
 # Video-QA Web Demo
 
-## Functions
-- **Single-Round Video Interaction**: Upload a video, seek to any timestamp, and ask questions about the current frame.
+## Recorded Demo
 
-- **Live Camera Stream**: Use your local webcam for real-time video Q&A.
+### Single-round response
+Upload a video, seek to any timestamp, and ask questions about the video you have seen so far.
+[下载或观看视频](https://github.com/yaolinli/TimeChat-Online/raw/main/demo/assets/single_round.mp4)
+### Multi-round response
+Upload a video, seek to any timestamp, and ask questions about the video you have seen so far. The model will actively respond at certain key moments.
+[下载或观看视频](https://github.com/yaolinli/TimeChat-Online/raw/main/demo/assets/multi_round.mp4)
+### Live Camera response
+Use your local webcam for real-time video Q&A.
+[下载或观看视频](https://github.com/yaolinli/TimeChat-Online/raw/main/demo/assets/camera.mp4)
 
-- **Frame Sampling & Token Drop**: Built-in drop ratios optimize inference speed by discarding less relevant frames.
 
-- **Multi-Format Support**: Compatible with .mp4, .mov, .avi, .mkv and mixed video inputs.
 
 ## Requirements
 Make sure you have **Python 3.8+** installed for compatibility with the following dependencies.
@@ -45,15 +50,14 @@ python web_demo.py [options]
 *For a better experience, we recommend that you change the default model path to our released checkpoint [`wyccccc/TimeChatOnline-7B`](https://huggingface.co/wyccccc/TimeChatOnline-7B).
 
 ## Demo workflow
-![demo](assets/demo.png)
 Navigate to http://\<server-name\>:\<server-port\>.
-- **Single-Round Response:** 
-    1. Switch to Single-Round Response tab.
+- **Upload Local Video:** 
+    1. Switch to "Upload Local Video" tab.
     2. Upload and play videos.
     3. Drag the time slider(or wait for automatic updates).
     4. Type a question and click Submit Question.
 
 - **Live Camera:** 
-    1. Switch to Live Camera tab.
+    1. Switch to "Live Camera" tab.
     2. Click Submit Video to capture webcam frames.
     3. Type a question and click Submit Question.
