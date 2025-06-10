@@ -4,13 +4,17 @@
 
 ### Single-round response
 Upload a video, seek to any timestamp, and ask questions about the video you have seen so far.
-[下载或观看视频](https://github.com/yaolinli/TimeChat-Online/raw/main/demo/assets/single_round.mp4)
+<video controls>
+    <source src="assets/camera.mp4" type="video/mp4">
+    您的浏览器不支持视频标签。
+</video>
+[Watch the video](https://yaolinli.github.io/TimeChat-Online/demo/assets/camera.mp4)
 ### Multi-round response
 Upload a video, seek to any timestamp, and ask questions about the video you have seen so far. The model will actively respond at certain key moments.
-[下载或观看视频](https://github.com/yaolinli/TimeChat-Online/raw/main/demo/assets/multi_round.mp4)
+[Watch the video](https://yaolinli.github.io/TimeChat-Online/demo/assets/multi_round.mp4)
 ### Live Camera response
 Use your local webcam for real-time video Q&A.
-[下载或观看视频](https://github.com/yaolinli/TimeChat-Online/raw/main/demo/assets/camera.mp4)
+[Watch the video](https://yaolinli.github.io/TimeChat-Online/demo/assets/camera.mp4)
 
 
 
@@ -50,6 +54,7 @@ python web_demo.py [options]
 *For a better experience, we recommend that you change the default model path to our released checkpoint [`wyccccc/TimeChatOnline-7B`](https://huggingface.co/wyccccc/TimeChatOnline-7B).
 
 ## Demo workflow
+![demo](assets/demo.jpg)
 Navigate to http://\<server-name\>:\<server-port\>.
 - **Upload Local Video:** 
     1. Switch to "Upload Local Video" tab.
