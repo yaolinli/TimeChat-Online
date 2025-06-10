@@ -4,10 +4,6 @@
 
 ### Single-round response
 Upload a video, seek to any timestamp, and ask questions about the video you have seen so far.
-<video controls>
-    <source src="assets/camera.mp4" type="video/mp4">
-    您的浏览器不支持视频标签。
-</video>
 [Watch the video](https://yaolinli.github.io/TimeChat-Online/demo/assets/camera.mp4)
 ### Multi-round response
 Upload a video, seek to any timestamp, and ask questions about the video you have seen so far. The model will actively respond at certain key moments.
