@@ -8,7 +8,7 @@ Upload a video, seek to any timestamp, and ask questions about the video you hav
 ### Multi-round response
 Upload a video, seek to any timestamp, and ask questions about the video you have seen so far. The model will actively respond at certain key moments.
 [Watch the video](https://yaolinli.github.io/TimeChat-Online/demo/assets/multi_round.mp4)
-### Live Camera response
+### Live Camera
 Use your local webcam for real-time video Q&A.
 [Watch the video](https://yaolinli.github.io/TimeChat-Online/demo/assets/camera.mp4)
 
