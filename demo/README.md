@@ -55,7 +55,7 @@ python web_demo.py [options]
 
 ## Demo workflow
 ![demo](assets/demo.jpg)
-Navigate to http://\<server-name\>:\<server-port\>.
+Navigate to http://\<server-name\>:\<server-port\>. We use a streaming processing approach. When a user asks a question, the model only responds based on the video content prior to the moment the question was asked.
 - **Upload Local Video:** 
     1. Switch to "Upload Local Video" tab.
     2. Upload and play videos.

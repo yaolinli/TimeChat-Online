@@ -5,13 +5,12 @@
 </p>
 
 📰 **News**
+- **[2025-06-10]** Released the [online demo code](https://github.com/yaolinli/TimeChat-Online/blob/main/demo/) in a streaming manner.
 - **[2025-05-08]** Released the [annotation files](https://huggingface.co/datasets/wyccccc/TimeChat-Online-139K) and started to upload [video frames](https://huggingface.co/datasets/yaolily/TimeChat-Online-139K) of the TimeChat-Online-139K dataset.
 - **[2025-05-07]** Our model [checkpoints](https://huggingface.co/wyccccc/TimeChatOnline-7B), [training code](https://github.com/yaolinli/TimeChat-Online/blob/main/train/), and [eval code](https://github.com/yaolinli/TimeChat-Online/blob/main/eval/) are now available.
 - **[2025-05-01]** Our [paper](https://arxiv.org/abs/2504.17343) and [project page](https://timechat-online.github.io/) are now available.
 
-🚀 **Coming soon:**
 
-- [ ] We will release the online demo in a streaming manner later.
 
 ## Introduction
 
@@ -158,6 +157,7 @@ We release the extracted video frames at 1 fps [here](https://huggingface.co/dat
 We utilize the ms-swift framework for model training. Please note that the training script requires modifications to both ms-swift and transformers code. For detailed instructions, refer to the guidelines in [`train/readme.md`](./train/) before execution.
 ## Evaluation
 For detailed evaluation procedures, please refer to [`eval/readme.md`](./eval/).
+For detailed demo information, please refer to [`demo/README.md`](./demo/).
 
 ## Citation
 
