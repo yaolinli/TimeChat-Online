@@ -1,6 +1,6 @@
 # Video-QA Web Demo
 
-## Core Features
+## Functions
 - **Single-Round Video Interaction**: Upload a video, seek to any timestamp, and ask questions about the current frame.
 
 - **Live Camera Stream**: Use your local webcam for real-time video Q&A.
@@ -42,4 +42,15 @@ python web_demo.py [options]
 | `--server-name`          | Hostname/IP for the server        | `127.0.0.1`               |
 | `--ui-language`          | UI language (`en` or `zh`)        | `zh`                      |
 
-*For a better experience, we recommend that you change the default model path to our released checkpoint [`wyccccc/TimeChatOnline-7B`](https://huggingface.co/wyccccc/TimeChatOnline-7B).  
+*For a better experience, we recommend that you change the default model path to our released checkpoint [`wyccccc/TimeChatOnline-7B`](https://huggingface.co/wyccccc/TimeChatOnline-7B).
+
+## Demo workflow
+![demo](assets/demo.png)
+Navigate to http://\<server-name\>:\<server-port\>.
+- **Single-Round Response**
+Switch to  Single-Round Response tab.
+Upload and play videos → Drag the time slider(or wait for automatic updates) → Type a question → Click Submit Question.
+
+- **Live Camera**
+Switch to Live Camera tab.
+Click Submit Video to capture webcam frames → Type a question → Click Submit Question.

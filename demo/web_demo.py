@@ -1,8 +1,5 @@
-import io
 import os
 import subprocess
-import json
-
 import gradio as gr
 import numpy as np
 import time
@@ -16,7 +13,6 @@ from gradio_client import utils as client_utils
 from argparse import ArgumentParser
 from transformers import AutoProcessor
 import tempfile
-import cv2
 
 # Constants
 MIN_PIXELS = 448*448
