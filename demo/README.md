@@ -19,13 +19,14 @@ Make sure you have **Python 3.8+** installed for compatibility with the followin
 ```bash
 pip install -r requirements_demo.txt
 ```
-If your system does not have **ffmpeg**, you may need to install it manually:
+If your system does not have **ffmpeg** and **PyAV**, you may need to install it manually:
 ```bash
-sudo apt install ffmpeg
+sudo apt update && sudo apt install ffmpeg
+pip install av
 ```
 We recommend that you also install **flash_attn_2**.
 ```bash
-pip install flash-attn --no-build-isolation
+pip install flash-attn==2.7.4.post1 --no-build-isolation
 ```
 
 ## Usage
