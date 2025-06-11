@@ -4,7 +4,7 @@
 
 ### Single-round response
 Upload a video, seek to any timestamp, and ask questions about the video you have seen so far.
-[Watch the video](https://yaolinli.github.io/TimeChat-Online/demo/assets/camera.mp4)
+[Watch the video](https://yaolinli.github.io/TimeChat-Online/demo/assets/single_round.mp4)
 ### Multi-round response
 Upload a video, seek to any timestamp, and ask questions about the video you have seen so far. The model will actively respond at certain key moments.
 [Watch the video](https://yaolinli.github.io/TimeChat-Online/demo/assets/multi_round.mp4)
