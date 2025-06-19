@@ -1153,270 +1153,152 @@ class Qwen2_5_VLModel(Qwen2_5_VLPreTrainedModel):
         position_embeddings: Optional[Tuple[torch.Tensor, torch.Tensor]] = None,
         position_ids: Optional[torch.Tensor] = None,
         input_ids: Optional[torch.Tensor] = None,
-        labels:Optional[torch.Tensor] = None
+        labels: Optional[torch.Tensor] = None
     ):
         # print("token drop")
-        """
-        Perform token dropping within visual tokens, grouped by frame (Time dimension),
-        while skipping tokens in a specified row or column.
 
-        Args:
-            method (str):
-                The method to use for token dropping. Either "pixel" or "feature".
-            threshold (float):
-                The threshold for dropping tokens.
-                - If `absolute` is True:
-                    - For "pixel" method, it is the rescaled average RGB difference threshold, from 0 to 1.
-                    - For "feature" method, it is the cosine similarity threshold, from -1 to 1.
-                - If `absolute` is False:
-                    - It is the percentage of tokens to drop.
-            absolute (bool):
-                Whether the threshold is absolute or relative.
-            hidden_states (torch.Tensor): 
-                Shape [batch_size, seq_len, hidden_dim].
-            pixel_values_videos (torch.Tensor):
-                Shape [
-                    grid_t * (grid_h // merge_size) * (grid_w // merge_size) * merge_size * merge_size,
-                    channel * temporal_patch_size * patch_size * patch_size
-                ].
-            video_grid_thw (torch.LongTensor):
-                [grid_t, grid_h, grid_w].
-            position_embeddings (Tuple[torch.Tensor, torch.Tensor]): 
-                A tuple of two tensors:
-                (
-                pos_emb1: [3, batch_size, seq_len, emb_dim],
-                pos_emb2: [3, batch_size, seq_len, emb_dim]
-                ), where the first dimension (size=3) corresponds to
-                (time, height, width) channels.
-            position_ids (torch.Tensor):
-                Shape [3, batch_size, seq_len], each channel is (time, height, width).
-            input_ids (torch.Tensor):
-                Shape [batch_size, 1, seq_len] (assumed). 
-
-        Returns:
-            (torch.Tensor, Tuple[torch.Tensor, torch.Tensor], torch.Tensor):
-                A tuple of:
-                    dropped_hidden_states:      [batch_size, new_seq_len, hidden_dim]
-                    dropped_position_embeddings: (
-                        [3, batch_size, new_seq_len, emb_dim],
-                        [3, batch_size, new_seq_len, emb_dim]
-                    )
-                    dropped_position_ids:       [3, batch_size, new_seq_len]
-        """
-        arg_check = ""
+        # --- Check arguments ---
         if method not in ['pixel', 'feature']:
-            arg_check += f" Method {method} is not supported for token dropping."
-        if not absolute and (threshold < 0.0 or threshold > 1.0):
-            arg_check += f" Threshold value {threshold} is not within [0, 1] range for relative thresholding."
-        if absolute and method == 'pixel' and (threshold < 0.0 or threshold > 1.0):
-            arg_check += f" Threshold value {threshold} is not within [0, 1] range for pixel thresholding."
-        if absolute and method == 'feature' and (threshold < -1.0 or threshold > 1.0):
-            arg_check += f" Threshold value {threshold} is not within [-1, 1] range for feature thresholding."
-        if arg_check:
-            raise ValueError(arg_check)
-        
+            raise ValueError(f"Unsupported method: {method}")
+        if not absolute and not (0.0 <= threshold <= 1.0):
+            raise ValueError("Threshold should be in [0, 1] for relative thresholding")
+        if absolute:
+            if method == 'pixel' and not (0.0 <= threshold <= 1.0):
+                raise ValueError("Threshold should be in [0, 1] for pixel method")
+            if method == 'feature' and not (-1.0 <= threshold <= 1.0):
+                raise ValueError("Threshold should be in [-1, 1] for feature method")
+
         batch_size, seq_len, _ = hidden_states.size()
-        grid_t, grid_h, grid_w = video_grid_thw[0]
-        merge_size = 2  # hard-coded for now
+        merge_size = 2
         channel = 3
         temporal_patch_size = 2
         patch_size = 14
-        pixel_values_videos = pixel_values_videos.view(
-            grid_t, 
-            grid_h // merge_size, 
-            grid_w // merge_size, 
-            merge_size, 
-            merge_size, 
-            channel, 
-            temporal_patch_size, 
-            patch_size, 
-            patch_size
-        )
-        pixel_values_videos = pixel_values_videos.permute(0, 6, 1, 2, 5, 3, 4, 7, 8)
-        pixel_values_videos = pixel_values_videos.reshape(
-            grid_t, 
-            temporal_patch_size, 
-            (grid_h // merge_size) * (grid_w // merge_size), 
-            channel,
-            -1
-        )
-        # Denormalize pixel_values_videos to [0, 1]
-        for channel_id in range(3):
-            pixel_values_videos[:, :, :, channel_id] = pixel_values_videos[:, :, :, channel_id] * OPENAI_CLIP_STD[channel_id] + OPENAI_CLIP_MEAN[channel_id]
 
         vision_start_token_id = self.config.vision_start_token_id
-        vision_end_token_id   = self.config.vision_end_token_id
+        vision_end_token_id = self.config.vision_end_token_id
 
-        dropped_hidden_states_list  = []
-        dropped_pos_emb1_list       = []
-        dropped_pos_emb2_list       = []
-        dropped_pos_ids_list        = []
-        
-        #TimeChat-Online modify
+        dropped_hidden_states_list = []
+        dropped_pos_emb1_list = []
+        dropped_pos_emb2_list = []
+        dropped_pos_ids_list = []
         filtered_labels = []
-        
-        # Used for storing dropped token positions and drop num. Uncomment if needed.
-        # dropped_positions_info = {} # dropped_positions_info[sample_idx][time_id] = list of (height, width)
-        # cnt_total, cnt_drop = 0, 0
-        
+
         for i in range(batch_size):
-            sample_input_ids = input_ids[i].squeeze(0)  # from [1, seq_len] to [seq_len]
+            grid_t, grid_h, grid_w = video_grid_thw[i]
+            num_tokens = (
+                grid_t * (grid_h // merge_size) * (grid_w // merge_size)
+                * merge_size * merge_size
+            )
+            pixel_values_video_i = pixel_values_videos[
+                i * num_tokens: (i + 1) * num_tokens
+            ]
+            pixel_values_video_i = pixel_values_video_i.view(
+                grid_t,
+                grid_h // merge_size,
+                grid_w // merge_size,
+                merge_size,
+                merge_size,
+                channel,
+                temporal_patch_size,
+                patch_size,
+                patch_size
+            ).permute(0, 6, 1, 2, 5, 3, 4, 7, 8).reshape(
+                grid_t,
+                temporal_patch_size,
+                (grid_h // merge_size) * (grid_w // merge_size),
+                channel,
+                -1
+            )
+            for ch in range(3):
+                pixel_values_video_i[:, :, :, ch] = (
+                    pixel_values_video_i[:, :, :, ch] * OPENAI_CLIP_STD[ch] + OPENAI_CLIP_MEAN[ch]
+                )
 
+            sample_input_ids = input_ids[i].squeeze(0)
             vision_start_indices = (sample_input_ids == vision_start_token_id).nonzero(as_tuple=True)[0]
-            vision_end_indices   = (sample_input_ids == vision_end_token_id).nonzero(as_tuple=True)[0]
-
+            vision_end_indices = (sample_input_ids == vision_end_token_id).nonzero(as_tuple=True)[0]
             visual_token_indices = []
             for start_idx, end_idx in zip(vision_start_indices, vision_end_indices):
-                visual_token_indices.extend(range(start_idx + 1, end_idx)) # Assuming start_idx < end_idx
+                visual_token_indices.extend(range(start_idx + 1, end_idx))
             visual_token_indices = set(visual_token_indices)
 
-            sample_pos_ids = position_ids[:, i] # [3, seq_len]
-            time_ids   = sample_pos_ids[0, :]   # channel 0 => time
-            height_ids = sample_pos_ids[1, :]  # channel 1 => row
-            width_ids  = sample_pos_ids[2, :]  # channel 2 => column
+            sample_pos_ids = position_ids[:, i]
+            time_ids, height_ids, width_ids = sample_pos_ids
             unique_frames = time_ids.unique()
-
             keep_mask = torch.ones(seq_len, dtype=torch.bool, device=hidden_states.device)
-            # dropped_positions_info[i] = {}
-            
-            if len(visual_token_indices) > 0:
-                if method == 'pixel':
-                    curr_frame, prev_frame = None, None
-                    idx_this_frame = -1
-                    for t in unique_frames:
-                        frame_indices = (time_ids == t).nonzero(as_tuple=True)[0]
-                        frame_indices = [idx for idx in frame_indices if idx.item() in visual_token_indices]
 
-                        if len(frame_indices) == 0:
-                            continue
-                        idx_this_frame += 1
-                        
-                        start_idx = frame_indices[0]
-                        h_start, w_start = height_ids[start_idx].item(), width_ids[start_idx].item()
-                        curr_frame = pixel_values_videos[idx_this_frame // temporal_patch_size, -1] # [num_patches, channel, other_dims]
-                        # print("curr_frame shape", curr_frame.shape)
-                        # cnt_total += len(frame_indices)
-                        if prev_frame is None:
-                            prev_frame = pixel_values_videos[idx_this_frame // temporal_patch_size, 0]
-                            continue
-                        difference = torch.abs(prev_frame - curr_frame).mean(dim=2).mean(dim=1) # [num_patches]
-                        
-                        if absolute:
-                            drop_indices_this_frame = (difference < threshold).nonzero(as_tuple=True)[0].to(start_idx.device) + start_idx
-                        else:
-                            k = int(difference.numel() * threshold)
-                            drop_indices_this_frame = torch.topk(difference, k, largest=False).indices.to(start_idx.device) + start_idx  # out-of-order
-                        
-                        # cnt_drop += len(drop_indices_this_frame)
-                        prev_frame = pixel_values_videos[idx_this_frame // temporal_patch_size, 0]
-                        
-                        keep_mask[drop_indices_this_frame] = False
-                        
-                        # save drop token idx
-                        # for di in drop_indices_this_frame:
-                        #     h_ = height_ids[di].item() - h_start
-                        #     w_ = width_ids[di].item() - w_start
-                        #     if idx_this_frame not in dropped_positions_info[i]:
-                        #         dropped_positions_info[i][idx_this_frame] = []
-                        #     dropped_positions_info[i][idx_this_frame].append((h_, w_))
-                    
-                if method == 'feature':
-                    curr_frame, prev_frame = None, None
-                    idx_this_frame = -1
-                    for t in unique_frames:
-                        frame_indices = (time_ids == t).nonzero(as_tuple=True)[0]
-                        frame_indices = [idx for idx in frame_indices if idx.item() in visual_token_indices]
+            if method == 'pixel' and len(visual_token_indices) > 0:
+                curr_frame, prev_frame = None, None
+                idx_this_frame = -1
+                for t in unique_frames:
+                    frame_indices = (time_ids == t).nonzero(as_tuple=True)[0]
+                    frame_indices = [idx for idx in frame_indices if idx.item() in visual_token_indices]
+                    if len(frame_indices) == 0:
+                        continue
+                    idx_this_frame += 1
+                    start_idx = frame_indices[0]
+                    curr_frame = pixel_values_video_i[idx_this_frame // temporal_patch_size, -1]
+                    if prev_frame is None:
+                        prev_frame = pixel_values_video_i[idx_this_frame // temporal_patch_size, 0]
+                        continue
+                    difference = torch.abs(prev_frame - curr_frame).mean(dim=2).mean(dim=1)
+                    if absolute:
+                        drop_idx = (difference < threshold).nonzero(as_tuple=True)[0].to(start_idx.device) + start_idx
+                    else:
+                        k = int(difference.numel() * threshold)
+                        drop_idx = torch.topk(difference, k, largest=False).indices.to(start_idx.device) + start_idx
+                    prev_frame = pixel_values_video_i[idx_this_frame // temporal_patch_size, 0]
+                    keep_mask[drop_idx] = False
 
-                        if len(frame_indices) == 0:
-                            continue
-                        idx_this_frame += 1
-                        
-                        start_idx = frame_indices[0]
-                        h_start, w_start = height_ids[start_idx].item(), width_ids[start_idx].item()
-                        curr_frame = hidden_states[i, frame_indices] # [num_patches, hidden_dim]
-                        # cnt_total += len(frame_indices)
-                        if prev_frame is None:
-                            prev_frame = curr_frame
-                            continue
-                        similarity = F.cosine_similarity(prev_frame, curr_frame, dim=1) # [num_patches]
-                        
-                        if absolute:
-                            drop_indices_this_frame = (similarity > threshold).nonzero(as_tuple=True)[0].to(start_idx.device) + start_idx
-                        else:
-                            k = int(similarity.numel() * threshold)
-                            drop_indices_this_frame = torch.topk(similarity, k).indices.to(start_idx.device) + start_idx    # out-of-order
-                        
-                        # cnt_drop += len(drop_indices_this_frame)
+            elif method == 'feature' and len(visual_token_indices) > 0:
+                curr_frame, prev_frame = None, None
+                idx_this_frame = -1
+                for t in unique_frames:
+                    frame_indices = (time_ids == t).nonzero(as_tuple=True)[0]
+                    frame_indices = [idx for idx in frame_indices if idx.item() in visual_token_indices]
+                    if len(frame_indices) == 0:
+                        continue
+                    idx_this_frame += 1
+                    start_idx = frame_indices[0]
+                    curr_frame = hidden_states[i, frame_indices]
+                    if prev_frame is None:
                         prev_frame = curr_frame
-                        
-                        keep_mask[drop_indices_this_frame] = False
-                        
-                        # save drop token idx
-                        # for di in drop_indices_this_frame:
-                        #     h_ = height_ids[di].item() - h_start
-                        #     w_ = width_ids[di].item() - w_start
-                        #     if idx_this_frame not in dropped_positions_info[i]:
-                        #         dropped_positions_info[i][idx_this_frame] = []
-                        #     dropped_positions_info[i][idx_this_frame].append((h_, w_))
+                        continue
+                    similarity = F.cosine_similarity(prev_frame, curr_frame, dim=1)
+                    if absolute:
+                        drop_idx = (similarity > threshold).nonzero(as_tuple=True)[0].to(start_idx.device) + start_idx
+                    else:
+                        k = int(similarity.numel() * threshold)
+                        drop_idx = torch.topk(similarity, k).indices.to(start_idx.device) + start_idx
+                    prev_frame = curr_frame
+                    keep_mask[drop_idx] = False
 
-            # Apply keep_mask to hidden_states
             dropped_hidden = hidden_states[i][keep_mask.to(hidden_states.device)]
-
-            # Apply keep_mask to position_embeddings
-            # pos_emb1/pos_emb2 => [3, batch_size, seq_len, emb_dim]
-            pos_emb1_i = position_embeddings[0][:, i]  # shape [3, seq_len, emb_dim]
-            pos_emb2_i = position_embeddings[1][:, i]  # same shape
-
-            # Transform [3, seq_len, emb_dim] to [seq_len, 3, emb_dim], filter, then revert
-            dropped_pos_emb1 = pos_emb1_i.transpose(0,1)[keep_mask.to(pos_emb1_i.device)].transpose(0,1)
-            dropped_pos_emb2 = pos_emb2_i.transpose(0,1)[keep_mask.to(pos_emb2_i.device)].transpose(0,1)
-
-            # Apply keep_mask to position_ids => shape [3, seq_len] => [seq_len, 3]
+            pos_emb1_i = position_embeddings[0][:, i]
+            pos_emb2_i = position_embeddings[1][:, i]
+            dropped_pos_emb1 = pos_emb1_i.transpose(0, 1)[keep_mask.to(pos_emb1_i.device)].transpose(0, 1)
+            dropped_pos_emb2 = pos_emb2_i.transpose(0, 1)[keep_mask.to(pos_emb2_i.device)].transpose(0, 1)
             pos_ids_i = sample_pos_ids.transpose(0,1)
             dropped_pos_ids_i = pos_ids_i[keep_mask.to(pos_ids_i.device)].transpose(0,1)  # shape [3, new_seq_len]
 
-            # TimeChat-Online modify
+            dropped_hidden_states_list.append(dropped_hidden.unsqueeze(0))
+            dropped_pos_emb1_list.append(dropped_pos_emb1.unsqueeze(1))
+            dropped_pos_emb2_list.append(dropped_pos_emb2.unsqueeze(1))
+            dropped_pos_ids_list.append(dropped_pos_ids_i.unsqueeze(1))
+
             if labels is not None:
-                drop_label_i = labels[i][keep_mask.to(labels.device)]
-                
-            
-            # Collect the results of this sample
-            dropped_hidden_states_list.append(dropped_hidden.unsqueeze(0))         # [1, new_seq_len, hidden_dim]
-            dropped_pos_emb1_list.append(dropped_pos_emb1.unsqueeze(1))           # [3, 1, new_seq_len, emb_dim]
-            dropped_pos_emb2_list.append(dropped_pos_emb2.unsqueeze(1))           # [3, 1, new_seq_len, emb_dim]
-            dropped_pos_ids_list.append(dropped_pos_ids_i.unsqueeze(1))           # [3, 1, new_seq_len]
-            # TimeChat-Online modify
-            filtered_labels.append(drop_label_i)
+                filtered_labels.append(labels[i][keep_mask.to(labels.device)])
 
-
-        # Finally, concatenate all samples
-        # If different samples end up with different new_seq_len, torch.cat will fail.
         dropped_hidden_states = torch.cat(dropped_hidden_states_list, dim=0)
         dropped_pos_emb1 = torch.cat(dropped_pos_emb1_list, dim=1)
         dropped_pos_emb2 = torch.cat(dropped_pos_emb2_list, dim=1)
-        dropped_pos_ids  = torch.cat(dropped_pos_ids_list,  dim=1)
-
+        dropped_pos_ids = torch.cat(dropped_pos_ids_list, dim=1)
         dropped_position_embeddings = (dropped_pos_emb1, dropped_pos_emb2)
-        
-        # TimeChat-Online modify
-        labels = torch.stack(filtered_labels)
-        # save dropped_pos_ids
-        # with open("drop_pos_pixel.json", 'w') as f:
-        #     json.dump(dropped_positions_info, f)
-        
-        # save drop num
-        # save_path = "dropnum_sim60.json"
-        # if os.path.exists(save_path):
-        #     with open(save_path, 'r') as f:
-        #         dropnum = json.load(f)
-        # else:
-        #     dropnum = {'total': [], 'drop': []}
-        # dropnum['total'].append(cnt_total)
-        # dropnum['drop'].append(cnt_drop)
-        # with open(save_path, 'w') as f:
-        #     json.dump(dropnum, f)
+        if labels is not None:
+            labels = torch.stack(filtered_labels)
 
-        return dropped_hidden_states, dropped_position_embeddings, dropped_pos_ids,labels
+        return dropped_hidden_states, dropped_position_embeddings, dropped_pos_ids, labels
+
     
     def forward(
         self,
@@ -1486,8 +1368,9 @@ class Qwen2_5_VLModel(Qwen2_5_VLPreTrainedModel):
         vision_start_token_id = self.config.vision_start_token_id
         # if input ids have image
         # 如果随机数小于0.5，则执行以下代码             
-        if random.random() < 0.5:
+        if random.random() < 1:
             if vision_start_token_id in input_ids[0]:
+                print("hello")
                 hidden_states, position_embeddings, position_ids,labels = self.token_drop(
                     method='feature',
                     threshold=0.7,

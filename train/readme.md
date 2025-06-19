@@ -42,11 +42,11 @@ cd ..
 
 ```bash
 # Replace files in ms-swift
-mv train/ms-swift-replace-code/base.py train/ms-swift/swift/llm/template/base.py
-mv train/ms-swift-replace-code/qwen.py train/ms-swift/swift/llm/template/template/qwen.py
+cp train/ms-swift-replace-code/base.py train/ms-swift/swift/llm/template/base.py
+cp train/ms-swift-replace-code/qwen.py train/ms-swift/swift/llm/template/template/qwen.py
 
 # Replace file in transformers
-mv train/transformers-replace-code/modeling_qwen2_5_vl.py train/qwen_2_5/transformers/src/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py
+cp train/transformers-replace-code/modeling_qwen2_5_vl.py train/transformers/src/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py
 ```
 
 ---
