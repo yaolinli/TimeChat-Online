@@ -85,7 +85,7 @@ DR_SAVE_PATH = "drop_{curr_time}.jsonl"
 # default: Load the model on the available device(s)
 model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
     "wyccccc/TimeChatOnline-7B", torch_dtype=torch.bfloat16, attn_implementation="flash_attention_2",
-    device_map="cuda:0",
+    device_map="auto",
 )
 
 processor = AutoProcessor.from_pretrained("wyccccc/TimeChatOnline-7B")
@@ -122,7 +122,7 @@ inputs = processor(
     padding=True,
     return_tensors="pt",
 )
-inputs = inputs.to("cuda:0")
+# inputs = inputs.to("cuda")
 
 # Inference: Generation of the output
 generated_ids = model.generate(
