@@ -5,6 +5,7 @@
 </p>
 
 📰 **News**
+- **[2025-07-05]** 🌟🚀 Our paper is accepted by ACM Multimedia 2025.
 - **[2025-06-10]** Released the [online demo code](https://github.com/yaolinli/TimeChat-Online/blob/main/demo/) in a streaming manner.
 - **[2025-05-08]** Released the [annotation files](https://huggingface.co/datasets/wyccccc/TimeChat-Online-139K) and started to upload [video frames](https://huggingface.co/datasets/yaolily/TimeChat-Online-139K) of the TimeChat-Online-139K dataset.
 - **[2025-05-07]** Our model [checkpoints](https://huggingface.co/wyccccc/TimeChatOnline-7B), [training code](https://github.com/yaolinli/TimeChat-Online/blob/main/train/), and [eval code](https://github.com/yaolinli/TimeChat-Online/blob/main/eval/) are now available.
