@@ -5,10 +5,10 @@
 </p>
 
 📰 **News**
-- **[2025-07-06]** 📋 Released detailed [frame caption annotations](https://huggingface.co/datasets/yaolily/TimeChat-Online-139K/blob/main/annotations_caption_flt.jsonl) with 876K frame-level captions across 10,949 videos.
+- **[2025-07-10]** 📋 Released detailed [frame caption annotations](https://huggingface.co/datasets/yaolily/TimeChat-Online-139K/blob/main/annotations_caption_flt.jsonl) with 876K frame-level captions across 10,949 videos in TimeChat-Online-139K.
 - **[2025-07-05]** 🌟🚀 Our paper is accepted by ACM Multimedia 2025.
 - **[2025-06-10]** Released the [online demo code](https://github.com/yaolinli/TimeChat-Online/blob/main/demo/) in a streaming manner.
-- **[2025-05-08]** Released the [annotation files](https://huggingface.co/datasets/wyccccc/TimeChat-Online-139K) and started to upload [video frames](https://huggingface.co/datasets/yaolily/TimeChat-Online-139K) of the TimeChat-Online-139K dataset.
+- **[2025-05-08]** Released the [annotation files](https://huggingface.co/datasets/yaolily/TimeChat-Online-139K/blob/main/time_chat_online_139k_train_flt.jsonl) and started to upload [video frames](https://huggingface.co/datasets/yaolily/TimeChat-Online-139K) of the TimeChat-Online-139K dataset.
 - **[2025-05-07]** Our model [checkpoints](https://huggingface.co/wyccccc/TimeChatOnline-7B), [training code](https://github.com/yaolinli/TimeChat-Online/blob/main/train/), and [eval code](https://github.com/yaolinli/TimeChat-Online/blob/main/eval/) are now available.
 - **[2025-05-01]** Our [paper](https://arxiv.org/abs/2504.17343) and [project page](https://timechat-online.github.io/) are now available.
 
