@@ -85,6 +85,8 @@ DROP_ABSOLUTE = True
 DR_SAVE_PATH = "drop_{curr_time}.jsonl"
 
 # default: Load the model on the available device(s)
+# we also recommand use "torch.set_default_device('cuda')"
+# torch.set_default_device('cuda')
 model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
     "wyccccc/TimeChatOnline-7B", torch_dtype=torch.bfloat16, attn_implementation="flash_attention_2",
     device_map="auto",
