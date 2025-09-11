@@ -155,7 +155,7 @@ For flexible real-time interaction, we introduce a comprehensive streaming video
 - **139K** question-answer pairs covering backward tracing, real-time visual perception, and forward active responding
 - Average of **87.8** scene-oriented key frames per video (~7.14 seconds between consecutive frames)
 
-We release the extracted video frames at 1 fps [here](https://huggingface.co/datasets/yaolily/TimeChat-Online-139K) and the question-answer pairs [here](https://huggingface.co/datasets/wyccccc/TimeChat-Online-139K).
+We release the extracted video frames at 1 fps [here](https://huggingface.co/datasets/yaolily/TimeChat-Online-139K).
 
 ## Training
 We utilize the ms-swift framework for model training. Please note that the training script requires modifications to both ms-swift and transformers code. For detailed instructions, refer to the guidelines in [`train/readme.md`](./train/) before execution.
