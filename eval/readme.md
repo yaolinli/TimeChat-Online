@@ -82,3 +82,66 @@ In each `eval_*.sh`, there are several alterable arguments:
     - For pixel-level drop, it ranges in [0, 1]. The drop ratio grows as the threshold increases.  
 
 For details of the drop process, you can refer to the code [here](./qwen2_5_vl/modeling_qwen2_5_vl_DTD.py#L1137-L1400).  
+
+
+## Token Drop Visualization Guide
+
+We also explain how to record and visualize dropped tokens during the evaluation of TimeChat-Online with Differential Token Dropping (DTD).
+<img width="1709" height="1011" alt="image" src="https://github.com/user-attachments/assets/9aeb880c-8e56-409a-98ce-27d41aacc324" />
+
+
+### 1) Enable Drop-Token Logging
+
+To save the intermediate drop positions (which tokens/patches were dropped in each frame), modify the following line in:
+
+```
+eval/qwen2_5_vl/modeling_qwen2_5_vl_DTD.py
+```
+
+Specifically, at [line 1149](https://github.com/yaolinli/TimeChat-Online/blob/7eb7a3a93adcbd8cb6414a59e48e43e695d67c5f/eval/qwen2_5_vl/modeling_qwen2_5_vl_DTD.py#L1149):
+
+
+Set:
+
+```python
+dp_save_path = "/your/custom/output/dir/dp.jsonl"
+```
+
+Once this is set, when you evaluate a video, the model will automatically generate a JSON file that logs the **dropped patch coordinates** for each frame. 
+
+### 2) Example Drop-Position JSON
+Example jsonl is [eval/sample_151_ft0d4.jsonl](https://github.com/yaolinli/TimeChat-Online/blob/main/eval/sample_151_ft0d4.jsonl).
+```json
+[
+  {
+    "0": [[i, j], [i, j], ...],
+    "1": [[i, j], ...],
+    ...
+  }
+]
+```
+
+### 3) Visualizing Dropped Tokens
+Use python file [eval/get_visual_case.py](https://github.com/yaolinli/TimeChat-Online/blob/main/eval/get_visual_case.py)
+```python
+from get_visual_case import get_visual_case
+
+get_visual_case(
+    dp_jsonl="sample_151_ft0d4.jsonl",
+    video_path="StreamingBench/Real-Time Visual Understanding/sample_151/video.mp4"
+)
+```
+
+### 4) Output
+
+The script outputs both the raw frames and the drop‑masked frames:
+
+```
+000_raw.png
+000.png
+001_raw.png
+001.png
+...
+```
+
+
