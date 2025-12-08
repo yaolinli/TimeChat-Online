@@ -5,6 +5,7 @@
 </p>
 
 📰 **News**
+- **[2025-12-8]** We released the [visualization code](https://github.com/yaolinli/TimeChat-Online/blob/main/eval/readme.md#token-drop-visualization-guide) for the DTD module (i.e., how to draw the Teaser Figure).
 - **[2025-07-10]** 📋 Released detailed [frame caption annotations](https://huggingface.co/datasets/yaolily/TimeChat-Online-139K/blob/main/annotations_caption_flt.jsonl) with 876K frame-level captions across 10,949 videos in TimeChat-Online-139K.
 - **[2025-07-05]** 🌟🚀 Our paper is accepted by ACM Multimedia 2025.
 - **[2025-06-10]** Released the [online demo code](https://github.com/yaolinli/TimeChat-Online/blob/main/demo/) in a streaming manner.
