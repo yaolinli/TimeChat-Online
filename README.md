@@ -168,14 +168,12 @@ For detailed demo information, please refer to [`demo/README.md`](./demo/).
 
 If you find our work helpful, please consider citing:
 ```
-@misc{timechatonline,
-    title={TimeChat-Online: 80% Visual Tokens are Naturally Redundant in Streaming Videos}, 
-    author={Linli Yao and Yicheng Li and Yuancheng Wei and Lei Li and Shuhuai Ren and Yuanxin Liu and Kun Ouyang and Lean Wang and Shicheng Li and Sida Li and Lingpeng Kong and Qi Liu and Yuanxing Zhang and Xu Sun},
-    year={2025},
-    eprint={2504.17343},
-    archivePrefix={arXiv},
-    primaryClass={cs.CV},
-    url={https://arxiv.org/abs/2504.17343}, 
+@inproceedings{yao2025timechatonline,
+  title={Timechat-online: 80\% visual tokens are naturally redundant in streaming videos},
+  author={Yao, Linli and Li, Yicheng and Wei, Yuancheng and Li, Lei and Ren, Shuhuai and Liu, Yuanxin and Ouyang, Kun and Wang, Lean and Li, Shicheng and Li, Sida and others},
+  booktitle={Proceedings of the 33rd ACM International Conference on Multimedia},
+  pages={10807--10816},
+  year={2025}
 }
 ```
 
