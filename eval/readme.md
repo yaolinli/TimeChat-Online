@@ -122,26 +122,56 @@ Example jsonl is [eval/sample_151_ft0d4.jsonl](https://github.com/yaolinli/TimeC
 ```
 
 ### 3) Visualizing Dropped Tokens
-Use python file [eval/get_visual_case.py](https://github.com/yaolinli/TimeChat-Online/blob/main/eval/get_visual_case.py)
-```python
-from get_visual_case import get_visual_case
 
-get_visual_case(
-    dp_jsonl="sample_151_ft0d4.jsonl",
-    video_path="StreamingBench/Real-Time Visual Understanding/sample_151/video.mp4"
+Use [eval/get_visual_case.py](https://github.com/yaolinli/TimeChat-Online/blob/main/eval/get_visual_case.py). This script uses the same `qwen_vl_utils` (included in `demo/qwen_vl_utils/`) as the model inference pipeline, ensuring the extracted frames exactly match what the model processes.
+
+**Requirements:**
+```bash
+pip install torch torchvision decord pillow numpy
+```
+
+**Command line:**
+```bash
+python eval/get_visual_case.py \
+    --dp_jsonl eval/sample_151_ft0d4.jsonl \
+    --video_path /path/to/StreamingBench/sample_151/video.mp4 \
+    --output_dir ./vis_output
+```
+
+**As a Python function:**
+```python
+from eval.get_visual_case import visualize_token_drop
+
+visualize_token_drop(
+    dp_jsonl="eval/sample_151_ft0d4.jsonl",
+    video_path="/path/to/StreamingBench/sample_151/video.mp4",
+    output_dir="./vis_output",
 )
 ```
 
+**Optional arguments:**
+- `--fps`: Frame extraction rate (default: 1.0)
+- `--alpha`: Drop mask opacity (default: 0.8)
+- `--min_pixels` / `--max_pixels`: Pixel budget per frame (default: 448*448)
+- `--grid_nrow`: Images per row in grid output (default: 8)
+- `--no_individual`: Skip saving per-frame images
+- `--no_grid`: Skip saving grid images
+
 ### 4) Output
 
-The script outputs both the raw frames and the drop‑masked frames:
+The script outputs raw frames, drop-masked frames, and comparison grids:
 
 ```
-000_raw.png
-000.png
-001_raw.png
-001.png
-...
+vis_output/
+├── 000second_raw.png      # raw frame
+├── 000second.png          # drop-masked frame (white = dropped patches)
+├── 001second_raw.png
+├── 001second.png
+├── ...
+├── grid_raw.png           # grid of raw frames
+├── grid_dropped.png       # grid of drop-masked frames
+├── comparison.png         # side-by-side comparison
+└── drop_stats.json        # per-frame drop statistics
 ```
 
 
