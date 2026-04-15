@@ -123,50 +123,25 @@ Example jsonl is [eval/sample_151_ft0d4.jsonl](https://github.com/yaolinli/TimeC
 
 ### 3) Visualizing Dropped Tokens
 
-Use [eval/get_visual_case.py](https://github.com/yaolinli/TimeChat-Online/blob/main/eval/get_visual_case.py). This script uses the same `qwen_vl_utils` (included in `demo/qwen_vl_utils/`) as the model inference pipeline, ensuring the extracted frames exactly match what the model processes.
+Use [eval/get_visual_case.py](https://github.com/yaolinli/TimeChat-Online/blob/main/eval/get_visual_case.py):
 
-**Requirements:**
 ```bash
 pip install torch torchvision decord pillow numpy
-```
 
-**Command line:**
-```bash
 python eval/get_visual_case.py \
     --dp_jsonl eval/sample_151_ft0d4.jsonl \
     --video_path /path/to/StreamingBench/sample_151/video.mp4 \
     --output_dir ./vis_output
 ```
 
-**As a Python function:**
-```python
-from eval.get_visual_case import visualize_token_drop
-
-visualize_token_drop(
-    dp_jsonl="eval/sample_151_ft0d4.jsonl",
-    video_path="/path/to/StreamingBench/sample_151/video.mp4",
-    output_dir="./vis_output",
-)
-```
-
-**Optional arguments:**
-- `--fps`: Frame extraction rate (default: 1.0)
-- `--alpha`: Drop mask opacity (default: 0.8)
-- `--min_pixels` / `--max_pixels`: Pixel budget per frame (default: 448*448)
-- `--grid_nrow`: Images per row in grid output (default: 8)
-- `--no_individual`: Skip saving per-frame images
-- `--no_grid`: Skip saving grid images
+This script uses the same `qwen_vl_utils` (in `demo/qwen_vl_utils/`) as the model inference pipeline, ensuring the extracted frames exactly match what the model processes. Run `python eval/get_visual_case.py --help` for all available options.
 
 ### 4) Output
-
-The script outputs raw frames, drop-masked frames, and comparison grids:
 
 ```
 vis_output/
 ├── 000second_raw.png      # raw frame
 ├── 000second.png          # drop-masked frame (white = dropped patches)
-├── 001second_raw.png
-├── 001second.png
 ├── ...
 ├── grid_raw.png           # grid of raw frames
 ├── grid_dropped.png       # grid of drop-masked frames
