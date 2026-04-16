@@ -38,7 +38,7 @@ def load_drop_positions(dp_jsonl_path):
     with open(dp_jsonl_path, 'r') as f:
         lines = f.readlines()
     
-    data = json.loads(lines[0])
+    data = json.loads(lines[-1])
     if isinstance(data, list):
         dp = data[0]
     else:
