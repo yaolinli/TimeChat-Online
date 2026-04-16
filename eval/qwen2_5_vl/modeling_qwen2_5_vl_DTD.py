@@ -1394,7 +1394,7 @@ class Qwen2_5_VLModel(Qwen2_5_VLPreTrainedModel):
         
         # save drop positions info
         if dp_save_path:
-            with open(dp_save_path, 'a' if os.path.exists(dr_save_path) else 'w') as f:
+            with open(dp_save_path, 'a' if os.path.exists(dp_save_path) else 'w') as f:
                 f.write(json.dumps(dropped_positions_info) + '\n')
 
         return dropped_hidden_states, dropped_position_embeddings, dropped_pos_ids
